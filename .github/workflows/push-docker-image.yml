@@ -29,6 +29,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/fileshare:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/doup:latest
           context: ./
           file: ./docker/Dockerfile

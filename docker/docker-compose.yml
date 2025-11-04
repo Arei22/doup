@@ -11,12 +11,12 @@ services:
       - 5432:5432
     volumes:
       - mnemosyneread-database-data:/var/lib/postgresql/data
-  fileshare:
+  doup:
     restart: always
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
-    container_name: fileshare
+    container_name: doup
     environment:
       DATABASE_URL: postgres://jacques:mnemosyneread@postgre/mnemosyneread
       TOKEN: token

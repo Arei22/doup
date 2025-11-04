@@ -1,6 +1,7 @@
 use crate::api_error::ApiError;
 use crate::database::postgresql::{PgPool, PgPooled};
 use crate::database::schemas::uploads::dsl as uploads_dsl;
+use crate::utils::db::update_upload;
 use crate::utils::parse_key;
 use actix_web::http::StatusCode;
 use actix_web::web::ThinData;
@@ -24,6 +25,8 @@ pub async fn generate_upload(
     }
 
     let mut conn: PgPooled = pool.get().await?;
+
+    update_upload(&mut conn).await?;
 
     let uuid: Uuid = insert_into(uploads_dsl::uploads)
         .values((

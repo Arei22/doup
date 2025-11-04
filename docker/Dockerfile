@@ -27,6 +27,6 @@ FROM alpine:3.20
 
 RUN apk add --no-cache ca-certificates
 
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/fileshare /fileshare
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/doup /doup
 
-CMD ["/fileshare"]
+CMD ["/doup"]

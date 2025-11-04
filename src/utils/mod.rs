@@ -2,6 +2,7 @@ use crate::api_error::ApiError;
 use actix_web::http::StatusCode;
 use std::str::FromStr;
 
+pub mod db;
 pub mod files;
 pub mod logger;
 pub mod templates;

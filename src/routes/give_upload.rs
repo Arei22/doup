@@ -12,6 +12,7 @@ use diesel::query_dsl::methods::{FilterDsl, SelectDsl};
 use diesel::{ExpressionMethods, select};
 use diesel_async::RunQueryDsl;
 use infer::Infer;
+use tokio::fs::remove_file;
 use uuid::Uuid;
 
 #[derive(serde::Deserialize)]
@@ -63,6 +64,12 @@ pub async fn give_upload(
     let Some(mime_type) = Infer::new().get(&file_content) else {
         return Err(ApiError::new_empty(StatusCode::UNSUPPORTED_MEDIA_TYPE));
     };
+
+    remove_file(file_path).await?;
+
+    diesel::delete(uploads_dsl::uploads.filter(uploads_dsl::uuid.eq(uuid)))
+        .execute(&mut conn)
+        .await?;
 
     Ok(HttpResponse::Ok()
         .insert_header((
