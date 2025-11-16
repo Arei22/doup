@@ -23,7 +23,7 @@ pub struct Info {
 
 #[post("/give_upload")]
 pub async fn give_upload(
-    info: web::Query<Info>,
+    info: web::Json<Info>,
     ThinData(pool): ThinData<PgPool>,
 ) -> Result<HttpResponse, ApiError> {
     if info.token != parse_key::<String>("TOKEN")? {
