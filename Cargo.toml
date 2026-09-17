@@ -4,27 +4,27 @@ version = "1.0.0"
 edition = "2024"
 
 [dependencies]
-actix-web = "4.11.0"
-askama = "0.16.0"
-chrono = "0.4.42"
-diesel = { version = "2.3.2", features = ["postgres", "uuid"] }
-diesel-async = { version = "0.9.0", features = [
+actix-web = "4.15.0"
+askama = "0.16.1"
+chrono = "0.4.45"
+diesel = { version = "2.3.13", features = ["postgres", "uuid"] }
+diesel-async = { version = "0.9.2", features = [
     "postgres",
     "bb8",
     "async-connection-wrapper",
 ] }
 diesel_migrations = "2.3.0"
 dotenvy = "0.15.7"
-env_logger = "0.11.8"
-log = "0.4.28"
-serde = "1.0.227"
-serde_json = "1.0.145"
-tokio = "1.48.0"
-uuid = "1.18.1"
+env_logger = "0.11.11"
+log = "0.4.34"
+serde = "1.0.229"
+serde_json = "1.0.151"
+tokio = "1.53.1"
+uuid = "1.26.1"
 static-files = "0.3.1"
 actix-web-static-files = { version = "4.1", features = ["static-files-03"] }
-actix-multipart = "0.7.2"
-infer = "0.19.0"
+actix-multipart = "0.8.2"
+infer = "0.22.0"
 
 [build-dependencies]
 static-files = "0.3.1"

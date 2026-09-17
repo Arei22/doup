@@ -1,10 +1,8 @@
-use diesel::{Connection, IntoSql};
+use diesel::Connection;
+use diesel_async::AsyncPgConnection;
 use diesel_async::async_connection_wrapper::AsyncConnectionWrapper;
 use diesel_async::pooled_connection::bb8::{Pool, PooledConnection};
-use diesel_async::pooled_connection::{
-    AsyncDieselConnectionManager, ManagerConfig, RecyclingMethod,
-};
-use diesel_async::{AsyncPgConnection, RunQueryDsl};
+use diesel_async::pooled_connection::{AsyncDieselConnectionManager, ManagerConfig};
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 use std::time::Duration;
 
@@ -16,24 +14,9 @@ pub type PgPooled<'a> = PooledConnection<'a, AsyncPgConnection>;
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 pub async fn get_pool() -> PgPool {
-    // See: https://github.com/weiznich/diesel_async/issues/139
-    let mut config = ManagerConfig::default();
-    config.recycling_method = RecyclingMethod::CustomFunction(Box::new(|conn| {
-        Box::pin(async move {
-            let _: i32 = diesel::select(1_i32.into_sql::<diesel::sql_types::Integer>())
-                .first(conn)
-                .await
-                .map_err(|error| {
-                    log::error!("Error pinging database connection: {error}");
-                    error
-                })?;
-            Ok(())
-        })
-    }));
-
     let manager = AsyncDieselConnectionManager::<AsyncPgConnection>::new_with_config(
         std::env::var("DATABASE_URL").unwrap(),
-        config,
+        ManagerConfig::default(),
     );
 
     let max_pool_connections: u32 = std::env::var("MAX_POOL_CONNECTIONS")
